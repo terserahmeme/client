@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Material Design Bootstrap</title>
+  <title>TERSERAH MEME</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap core CSS -->
@@ -22,8 +22,79 @@
 <body>
 
   <!-- Start your project here-->
-  <div id="app">
-    {{message}}
+  <!--Navbar-->
+  <nav class="navbar navbar-dark secondary-color justify-content-between">
+    <a class="navbar-brand" href="#"><span class="badge green darken-1"><h5>TERSERAH</h5></span><span class="badge badge-default"><h5>MEME</h5></span></a>
+    <form class="form-inline my-1">
+      <div class="md-form form-sm my-0">
+        <input class="form-control form-control-sm mr-sm-2 mb-0" type="text" placeholder="Search" aria-label="Search">
+      </div>
+      <button class="btn btn-outline-white btn-sm my-0" type="submit">Search</button>
+    </form>
+  </nav>
+
+  <div class="container" id="app">
+
+    <div class="row mt-5">
+      <div class="col-lg-6 col-md-10 col-sm-10">
+        <img v-if="!backgroundimage" src="https://vignette.wikia.nocookie.net/scifiminibuilders/images/8/88/Your_Picture_Here.png/revision/latest?cb=20130507015051" style="height:300px ; width: 300px">
+        <img v-if="backgroundimage" v-bind:src="backgroundimage" class="z-depth-1" style="height:400px ; width: 400px">
+      </div>
+      <div class="col-lg-6 col-md-10 col-sm-10">
+        <label>Template</label>
+        <select class="browser-default custom-select" v-model="backgroundimage">
+          <option v-for="template in templates" v-bind:value="template.url">{{template.name}}</option>
+        </select>
+        <br>
+        <label>Image URL</label>
+        <input type="text" class="form-control" v-model="backgroundimage">
+        <!-- <label>Or Upload Image</label>
+        <input type="file" class="form-control form-control-md"> -->
+        <label>Top Text</label>
+        <input type="text" class="form-control" v-model="toptext">
+        <label>Bottom Text</label>
+        <input type="text" class="form-control" v-model="bottomtext">
+        <hr>
+        <h5>Optional</h5>
+          <!-- Material form row -->
+          <form>
+              <!-- Grid row -->
+              <div class="form-row">
+                <!-- Grid column -->
+                <div class="col">
+                  <!-- Material input -->
+                  <div class="md-form mt-0">
+                    <input type="text" class="form-control" placeholder="Height" v-model="customheight">
+                  </div>
+                </div>
+                <!-- Grid column -->
+            
+                <!-- Grid column -->
+                <div class="col">
+                  <!-- Material input -->
+                  <div class="md-form mt-0">
+                    <input type="text" class="form-control" placeholder="Width" v-model="customwidth">
+                  </div>
+                </div>
+                <!-- Grid column -->
+              </div>
+              <!-- Grid row -->
+            </form>
+            <!-- Material form row -->
+        <div class="btn btn-secondary" @click="getImage">Generate</div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-5 mb-5 d-flex justify-content-center" v-if="meme">
+      <img v-bind:src="meme">
+    </div>
+
+
+
+
+
   </div>
 
   <!-- Grid row -->
@@ -40,7 +111,67 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'Hello Vue!'
+      message: 'Hello Vue!',
+      backgroundimage : '',
+      meme : '',
+      toptext : '',
+      bottomtext : '',
+
+      customheight : '',
+      customwidth : '',
+
+      templates : '',
+      backgroundtemplate : ''
+    },
+    created : function() {
+      this.getTemplate()
+    },
+    methods : {
+      getTemplate : function(){
+        axios({
+          method : 'GET',
+          url : `https://api.imgflip.com/get_memes`
+        })
+        .then(response=>{
+          let template_data = response.data.data.memes
+          this.templates = template_data
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
+      getImage : function(){
+        let beforeTop = this.toptext
+        let afterTop = ''
+        for(let i = 0 ; i < beforeTop.length ; i ++){
+          if(beforeTop[i] === ' '){
+            afterTop = afterTop + '_'
+          }else{
+            afterTop = afterTop + beforeTop[i]
+          }
+        }
+
+        let beforeBottom = this.bottomtext
+        let afterBottom = ''
+
+        for(let i = 0 ; i < beforeBottom.length ; i ++){
+          if(beforeBottom[i] === ' '){
+            afterBottom = afterBottom + '_'
+          }else if(beforeBottom[i] === '?'){
+            afterBottom = afterBottom + '~q'
+          }else{
+            afterBottom = afterBottom + beforeBottom[i]
+          }
+        }
+
+        if(this.customheight && this.customwidth){
+          let url = `https://memegen.link/custom/${afterTop}/${afterBottom}.jpg?alt=${this.backgroundimage}&height=${this.customheight}&width=${this.customwidth}`
+          this.meme = url
+        }else{
+          let url = `https://memegen.link/custom/${afterTop}/${afterBottom}.jpg?alt=${this.backgroundimage}`
+          this.meme = url
+        }
+      }
     }
   })
   </script>
