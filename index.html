@@ -41,7 +41,11 @@
         <img v-if="backgroundimage" v-bind:src="backgroundimage" class="z-depth-1" style="height:400px ; width: 400px">
       </div>
       <div class="col-lg-6 col-md-10 col-sm-10">
-        <!-- Default input -->
+        <label>Template</label>
+        <select class="browser-default custom-select" v-model="backgroundimage">
+          <option v-for="template in templates" v-bind:value="template.url">{{template.name}}</option>
+        </select>
+        <br>
         <label>Image URL</label>
         <input type="text" class="form-control" v-model="backgroundimage">
         <!-- <label>Or Upload Image</label>
@@ -114,7 +118,10 @@
       bottomtext : '',
 
       customheight : '',
-      customwidth : ''
+      customwidth : '',
+
+      templates : '',
+      backgroundtemplate : ''
     },
     created : function() {
       this.getTemplate()
@@ -126,8 +133,8 @@
           url : `https://api.imgflip.com/get_memes`
         })
         .then(response=>{
-          let template = response.data.data.memes
-          console.log(template)
+          let template_data = response.data.data.memes
+          this.templates = template_data
         })
         .catch(err=>{
           console.log(err)
