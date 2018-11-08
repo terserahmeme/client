@@ -14,45 +14,82 @@
   <link href="css/mdb.min.css" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="css/style.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <!-- Vue & Axios -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 </head>
 
-<body>
+<body class='cloudy-knoxville-gradient'>
 
   <!-- Start your project here-->
   <!--Navbar-->
-  <nav class="navbar navbar-dark secondary-color justify-content-between">
-    <a class="navbar-brand" href="#"><span class="badge green darken-1"><h5>TERSERAH</h5></span><span class="badge badge-default"><h5>MEME</h5></span></a>
-    <form class="form-inline my-1">
-      <div class="md-form form-sm my-0">
-        <input class="form-control form-control-sm mr-sm-2 mb-0" type="text" placeholder="Search" aria-label="Search">
-      </div>
-      <button class="btn btn-outline-white btn-sm my-0" type="submit">Search</button>
-    </form>
+<nav class="navbar navbar-expand-lg navbar-dark secondary-color">
+
+    <!-- Navbar brand -->
+    <a class="navbar-brand" href="#"><span class="badge default-color text-dark"><h5><strong>TERSERAH</strong></h5></span><span class="badge teal accent-3"><h5><strong>MEME</strong></h5></span></a>
+  
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+      aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+  
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-user"></i>  Login / Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-plus-square"></i>  Create Meme
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-grin-squint"></i>  Meme World</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-laugh"></i>  My Meme</a>
+        </li>
+  
+      </ul>
+      <!-- Links -->
+  
+      <form class="form-inline">
+        <div class="md-form my-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        </div>
+      </form>
+    </div>
+    <!-- Collapsible content -->
+  
   </nav>
+  <!--/.Navbar-->
 
   <div class="container" id="app">
 
     <div class="row mt-5">
       <div class="col-lg-6 col-md-10 col-sm-10">
-        <img v-if="!backgroundimage" src="https://vignette.wikia.nocookie.net/scifiminibuilders/images/8/88/Your_Picture_Here.png/revision/latest?cb=20130507015051" style="height:300px ; width: 300px">
-        <img v-if="backgroundimage" v-bind:src="backgroundimage" class="z-depth-1" style="height:400px ; width: 400px">
+        <img v-if="!backgroundimage" class="animated slideInLeft rounded mt-5 z-depth-1" src="https://vignette.wikia.nocookie.net/scifiminibuilders/images/8/88/Your_Picture_Here.png/revision/latest?cb=20130507015051" style="height:300px ; width: 300px">
+        <img v-if="backgroundimage" v-bind:src="backgroundimage" class="mt-5 z-depth-1" style="height:400px ; width: 400px">
       </div>
-      <div class="col-lg-6 col-md-10 col-sm-10">
-        <label>Template</label>
+      <div class="col-lg-6 col-md-10 col-sm-10 animated slideInRight">
+        <label>Background Template</label>
         <select class="browser-default custom-select" v-model="backgroundimage">
           <option v-for="template in templates" v-bind:value="template.url">{{template.name}}</option>
         </select>
         <br>
-        <label>Image URL</label>
+        <label class="mt-1">Custom Background URL</label>
         <input type="text" class="form-control" v-model="backgroundimage">
         <!-- <label>Or Upload Image</label>
         <input type="file" class="form-control form-control-md"> -->
-        <label>Top Text</label>
+        <label class="mt-1">Top Text</label>
         <input type="text" class="form-control" v-model="toptext">
-        <label>Bottom Text</label>
+        <label class="mt-1">Bottom Text</label>
         <input type="text" class="form-control" v-model="bottomtext">
         <hr>
         <h5>Optional</h5>
@@ -81,20 +118,22 @@
               <!-- Grid row -->
             </form>
             <!-- Material form row -->
-        <div class="btn btn-secondary" @click="getImage">Generate</div>
+        <div class="btn purple-gradient" @click="getImage">Generate</div>
       </div>
     </div>
 
     <hr>
 
     <div class="row mt-5 mb-5 d-flex justify-content-center" v-if="meme">
-      <img v-bind:src="meme">
+      <img v-bind:src="meme" class="z-depth-3 rounded">
     </div>
 
-
-
-
-
+    <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
+      <div class="col-sm-3"><div class="btn purple-gradient">Share To Facebook  <i class="fab fa-facebook-square"></i></div></div>
+      <div class="col-sm-3"><div class="btn purple-gradient">Download  <i class="fas fa-download"></i></div></div>
+      <div class="col-sm-3"><div class="btn purple-gradient">Save To Collections  <i class="fas fa-download"></i></div></div>
+    </div>
+    
   </div>
 
   <!-- Grid row -->
