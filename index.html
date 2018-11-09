@@ -136,6 +136,9 @@
     <div class="row mt-5 mb-5 d-flex justify-content-center" v-if="meme">
       <img v-bind:src="meme" class="z-depth-3 rounded">
     </div>
+    <div style="display: none;">
+      <canvas id="myCanvas" width="250" height="300" style="border:1px solid #d3d3d3;" >
+    </div>
 
     <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
       <div class="col-sm-3">
@@ -144,7 +147,7 @@
             <i class="fab fa-facebook-square"></i></a>
           </div>
       </div>
-      <div class="col-sm-3"><div class="btn purple-gradient">Download  <i class="fas fa-download"></i></div></div>
+      <div class="col-sm-3"><div class="btn purple-gradient" @click='canvasSave'>Download  <i class="fas fa-download"></i></div></div>
 
       <div class="col-sm-3"><div class="btn purple-gradient">Save To Collections  <i class="fas fa-download"></i></div></div>
     </div>
@@ -215,6 +218,31 @@
           console.log(err)
         })
       },
+      addToCanvas() {
+        let width = '500'
+        let height = '500'
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var imageObj = new Image();
+        ctx.canvas.width = width;
+        ctx.canvas.height = height;
+
+        base_image = new Image();
+        base_image.crossOrigin = "Anonymous";
+        base_image.src = this.meme;
+        base_image.onload = function () {
+          ctx.drawImage(base_image, 0, 0, width, height);
+        }
+
+      },
+      canvasSave() {
+        var canvas = document.getElementById('myCanvas');
+        var dataURL = canvas.toDataURL('image/jpeg', 1.0);
+        var link = document.createElement('a');
+          link.href = canvas.toDataURL();
+          link.download = "mypainting.png";
+          link.click();
+      },
       getTemplate : function(){
         axios({
           method : 'GET',
@@ -258,6 +286,9 @@
         }else{
           let url = `https://memegen.link/custom/${afterTop}/${afterBottom}.jpg?alt=${this.backgroundimage}`
           this.meme = url
+        }
+        if ( this.meme) {
+          this.addToCanvas()
         }
       }
     }
