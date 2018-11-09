@@ -85,8 +85,6 @@
         <br>
         <label class="mt-1">Custom Background URL</label>
         <input type="text" class="form-control" v-model="backgroundimage">
-        <!-- <label>Or Upload Image</label>
-        <input type="file" class="form-control form-control-md"> -->
         <label class="mt-1">Top Text</label>
         <input type="text" class="form-control" v-model="toptext">
         <label class="mt-1">Bottom Text</label>
@@ -117,8 +115,19 @@
               </div>
               <!-- Grid row -->
             </form>
+            <label class="mt-1">Upload Custome Background</label>
             <!-- Material form row -->
-        <div class="btn purple-gradient" @click="getImage">Generate</div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text text-white purple-gradient" @click="uploadImage" style="cursor: pointer;">Upload</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" v-on:change="getImageAdd($event)">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              </div>
+            </div>
+            <hr>
+        <center><div class="btn purple-gradient" @click="getImage">Generate</div></center>
       </div>
     </div>
 
@@ -129,10 +138,13 @@
     </div>
 
     <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
-      <div class="col-sm-3"><div class="btn purple-gradient" data-href="https://developers.facebook.com/docs/plugins/"> <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore"> Share To Facebook  <i class="fab fa-facebook-square"></i></div></div>
+      <div class="col-sm-3">
+        <div class="btn purple-gradient" data-href="https://developers.facebook.com/docs/plugins/"> 
+          <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore text-white"> Share To Facebook  
+            <i class="fab fa-facebook-square"></i></a>
+          </div>
+      </div>
       <div class="col-sm-3"><div class="btn purple-gradient">Download  <i class="fas fa-download"></i></div></div>
-      <!-- <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="large" data-mobile-iframe="false">
-      <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore">Bagikan</a></div> -->
 
       <div class="col-sm-3"><div class="btn purple-gradient">Save To Collections  <i class="fas fa-download"></i></div></div>
     </div>
@@ -172,12 +184,37 @@
       customwidth : '',
 
       templates : '',
-      backgroundtemplate : ''
+      backgroundtemplate : '',
+
+      addPicture : '',
+      config : {
+        port : 'http://localhost:3000'
+      }
     },
     created : function() {
       this.getTemplate()
     },
     methods : {
+      getImageAdd(link) {
+        this.addPicture = link.target.files[0];
+      },
+      uploadImage : function () {
+
+        console.log('masukk upload')
+        let formdata = new FormData()
+        formdata.append('image', this.addPicture);
+        
+        axios.post(`http://localhost:3000/memes/upload`, formdata, {
+                
+        })
+        .then(response=>{
+          console.log(response.data.message)
+          this.backgroundimage = response.data.link
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
       getTemplate : function(){
         axios({
           method : 'GET',
