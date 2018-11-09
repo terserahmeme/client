@@ -22,137 +22,253 @@
 </head>
 
 <body class='cloudy-knoxville-gradient'>
+  <div id="app">
+    <!-- Start your project here-->
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark secondary-color">
 
-  <!-- Start your project here-->
-  <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark secondary-color">
+      <!-- Navbar brand -->
+      <a class="navbar-brand" href="#"><span class="badge default-color text-dark">
+          <h5><strong>TERSERAH</strong></h5>
+        </span><span class="badge teal accent-3">
+          <h5><strong>MEME</strong></h5>
+        </span></a>
 
-    <!-- Navbar brand -->
-    <a class="navbar-brand" href="#"><span class="badge default-color text-dark"><h5><strong>TERSERAH</strong></h5></span><span class="badge teal accent-3"><h5><strong>MEME</strong></h5></span></a>
-  
-    <!-- Collapse button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-      aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="basicExampleNav">
-  
-      <!-- Links -->
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-user"></i>  Login / Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-plus-square"></i>  Create Meme
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-grin-squint"></i>  Meme World</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-laugh"></i>  My Meme</a>
-        </li>
-  
-      </ul>
-      <!-- Links -->
-  
-      <form class="form-inline">
-        <div class="md-form my-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        </div>
-      </form>
-    </div>
-    <!-- Collapsible content -->
-  
-  </nav>
-  <!--/.Navbar-->
+      <!-- Collapse button -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="container" id="app">
+      <!-- Collapsible content -->
+      <div class="collapse navbar-collapse" id="basicExampleNav">
 
-    <div class="row mt-5">
-      <div class="col-lg-6 col-md-10 col-sm-10">
-        <img v-if="!backgroundimage" class="animated slideInLeft rounded mt-5 z-depth-1" src="https://vignette.wikia.nocookie.net/scifiminibuilders/images/8/88/Your_Picture_Here.png/revision/latest?cb=20130507015051" style="height:300px ; width: 300px">
-        <img v-if="backgroundimage" v-bind:src="backgroundimage" class="mt-5 z-depth-1" style="height:400px ; width: 400px">
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" data-toggle="modal" data-target="#modalLRForm" v-if="!islogin">
+            <a class="nav-link" href="#"><i class="fas fa-user"></i> Login / Register</a>
+          </li>
+          <li class="nav-item" @click="logout" v-if="islogin">
+            <a class="nav-link" href="#"><i class="fas fa-user"></i> Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-plus-square"></i> Create Meme
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-grin-squint"></i> Meme World</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-laugh"></i> My Meme</a>
+          </li>
+
+        </ul>
+        <!-- Links -->
+
+        <form class="form-inline">
+          <div class="md-form my-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          </div>
+        </form>
       </div>
-      <div class="col-lg-6 col-md-10 col-sm-10 animated slideInRight">
-        <label>Background Template</label>
-        <select class="browser-default custom-select" v-model="backgroundimage">
-          <option v-for="template in templates" v-bind:value="template.url">{{template.name}}</option>
-        </select>
-        <br>
-        <label class="mt-1">Custom Background URL</label>
-        <input type="text" class="form-control" v-model="backgroundimage">
-        <label class="mt-1">Top Text</label>
-        <input type="text" class="form-control" v-model="toptext">
-        <label class="mt-1">Bottom Text</label>
-        <input type="text" class="form-control" v-model="bottomtext">
-        <hr>
-        <h5>Optional</h5>
+      <!-- Collapsible content -->
+
+    </nav>
+    <!--/.Navbar-->
+
+    <div class="container">
+
+      <div class="row mt-5">
+        <div class="col-lg-6 col-md-10 col-sm-10">
+          <img v-if="!backgroundimage" class="animated slideInLeft rounded mt-5 z-depth-1" src="https://vignette.wikia.nocookie.net/scifiminibuilders/images/8/88/Your_Picture_Here.png/revision/latest?cb=20130507015051"
+            style="height:300px ; width: 300px">
+          <img v-if="backgroundimage" v-bind:src="backgroundimage" class="mt-5 z-depth-1" style="height:400px ; width: 400px">
+        </div>
+        <div class="col-lg-6 col-md-10 col-sm-10 animated slideInRight">
+          <label>Background Template</label>
+          <select class="browser-default custom-select" v-model="backgroundimage">
+            <option v-for="template in templates" v-bind:value="template.url">{{template.name}}</option>
+          </select>
+          <br>
+          <label class="mt-1">Custom Background URL</label>
+          <input type="text" class="form-control" v-model="backgroundimage">
+          <label class="mt-1">Top Text</label>
+          <input type="text" class="form-control" v-model="toptext">
+          <label class="mt-1">Bottom Text</label>
+          <input type="text" class="form-control" v-model="bottomtext">
+          <hr>
+          <h5>Optional</h5>
           <!-- Material form row -->
           <form>
-              <!-- Grid row -->
-              <div class="form-row">
-                <!-- Grid column -->
-                <div class="col">
-                  <!-- Material input -->
-                  <div class="md-form mt-0">
-                    <input type="text" class="form-control" placeholder="Height" v-model="customheight">
-                  </div>
+            <!-- Grid row -->
+            <div class="form-row">
+              <!-- Grid column -->
+              <div class="col">
+                <!-- Material input -->
+                <div class="md-form mt-0">
+                  <input type="text" class="form-control" placeholder="Height" v-model="customheight">
                 </div>
-                <!-- Grid column -->
-            
-                <!-- Grid column -->
-                <div class="col">
-                  <!-- Material input -->
-                  <div class="md-form mt-0">
-                    <input type="text" class="form-control" placeholder="Width" v-model="customwidth">
-                  </div>
+              </div>
+              <!-- Grid column -->
+
+              <!-- Grid column -->
+              <div class="col">
+                <!-- Material input -->
+                <div class="md-form mt-0">
+                  <input type="text" class="form-control" placeholder="Width" v-model="customwidth">
                 </div>
-                <!-- Grid column -->
               </div>
-              <!-- Grid row -->
-            </form>
-            <label class="mt-1">Upload Custome Background</label>
-            <!-- Material form row -->
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text text-white purple-gradient" @click="uploadImage" style="cursor: pointer;">Upload</span>
-              </div>
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" v-on:change="getImageAdd($event)">
-                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-              </div>
+              <!-- Grid column -->
             </div>
-            <hr>
-        <center><div class="btn purple-gradient" @click="getImage">Generate</div></center>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="row mt-5 mb-5 d-flex justify-content-center" v-if="meme">
-      <img v-bind:src="meme" class="z-depth-3 rounded">
-    </div>
-    <div style="display: none;">
-      <canvas id="myCanvas" width="250" height="300" style="border:1px solid #d3d3d3;" >
-    </div>
-
-    <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
-      <div class="col-sm-3">
-        <div class="btn purple-gradient" data-href="https://developers.facebook.com/docs/plugins/"> 
-          <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore text-white"> Share To Facebook  
-            <i class="fab fa-facebook-square"></i></a>
+            <!-- Grid row -->
+          </form>
+          <label class="mt-1">Upload Custome Background</label>
+          <!-- Material form row -->
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text text-white purple-gradient" @click="uploadImage" style="cursor: pointer;">Upload</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01"
+                v-on:change="getImageAdd($event)">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
           </div>
+          <hr>
+          <center>
+            <div class="btn purple-gradient" @click="getImage">Generate</div>
+          </center>
+        </div>
       </div>
-      <div class="col-sm-3"><div class="btn purple-gradient" @click='canvasSave'>Download  <i class="fas fa-download"></i></div></div>
 
-      <div class="col-sm-3"><div class="btn purple-gradient">Save To Collections  <i class="fas fa-download"></i></div></div>
+      <hr>
+
+      <div class="row mt-5 mb-5 d-flex justify-content-center" v-if="meme">
+        <img v-bind:src="meme" class="z-depth-3 rounded">
+      </div>
+      <div style="display: none;">
+        <canvas id="myCanvas" width="250" height="300" style="border:1px solid #d3d3d3;">
+      </div>
+
+      <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
+        <div class="col-sm-3">
+          <div class="btn purple-gradient" data-href="https://developers.facebook.com/docs/plugins/">
+            <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore text-white">
+              Share To Facebook
+              <i class="fab fa-facebook-square"></i></a>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="btn purple-gradient" @click='canvasSave'>Download <i class="fas fa-download"></i></div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="btn purple-gradient">Save To Collections <i class="fas fa-download"></i></div>
+        </div>
+      </div>
+
+
+      <!--Modal: Login / Register Form-->
+      <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+          <!--Content-->
+          <div class="modal-content">
+
+            <!--Modal cascading tabs-->
+            <div class="modal-c-tabs">
+
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fa fa-user mr-1"></i>
+                    Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i class="fa fa-user-plus mr-1"></i>
+                    Register</a>
+                </li>
+              </ul>
+
+              <!-- Tab panels -->
+              <div class="tab-content">
+                <!--Panel 7-->
+                <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+
+                  <!--Body-->
+                  <div class="modal-body mb-1">
+                    <div class="md-form form-sm mb-5">
+                      <i class="fa fa-envelope prefix"></i>
+                      <input v-model="login_email" type="email" class="form-control form-control-sm validate">
+                      <label data-error="wrong" data-success="right" for="modalLRInput10">Your email</label>
+                    </div>
+
+                    <div class="md-form form-sm mb-4">
+                      <i class="fa fa-lock prefix"></i>
+                      <input v-model="login_password" type="password" class="form-control form-control-sm validate">
+                      <label data-error="wrong" data-success="right" for="modalLRInput11">Your password</label>
+                    </div>
+                    <div class="text-center mt-2">
+                      <button class="btn btn-info" @click="login" data-dismiss="modal">Log in <i class="fa fa-sign-in ml-1"></i></button>
+                    </div>
+                  </div>
+                  <!--Footer-->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+                  </div>
+
+                </div>
+                <!--/.Panel 7-->
+
+                <!--Panel 8-->
+                <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+                  <!--Body-->
+                  <div class="modal-body">
+                    <div class="md-form form-sm mb-5">
+                      <i class="fa fa-envelope prefix"></i>
+                      <input v-model="register_name" type="text" class="form-control form-control-sm">
+                      <label data-error="wrong" data-success="right" for="modalLRInput12">Your Name</label>
+                    </div>
+
+                    <div class="md-form form-sm mb-5">
+                      <i class="fa fa-envelope prefix"></i>
+                      <input v-model="register_email" type="email" id="modalLRInput12" class="form-control form-control-sm validate">
+                      <label data-error="wrong" data-success="right" for="modalLRInput12">Your email</label>
+                    </div>
+
+                    <div class="md-form form-sm mb-5">
+                      <i class="fa fa-lock prefix"></i>
+                      <input v-model="register_password" type="password" id="modalLRInput13" class="form-control form-control-sm validate">
+                      <label data-error="wrong" data-success="right" for="modalLRInput13">Your password</label>
+                    </div>
+
+                    <div class="text-center form-sm mt-2">
+                      <button class="btn btn-info" @click="register">Sign up <i class="fa fa-sign-in ml-1"></i></button>
+                    </div>
+
+                  </div>
+                  <!--Footer-->
+                  <div class="modal-footer">
+                    <div class="options text-right">
+                      <p class="pt-1">Already have an account? <a href="#" class="blue-text">Log In</a></p>
+                    </div>
+                    <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+                <!--/.Panel 8-->
+              </div>
+
+            </div>
+          </div>
+          <!--/.Content-->
+        </div>
+      </div>
+      <!--Modal: Login / Register Form-->
+
     </div>
-    
   </div>
+  
 
   <!-- Grid row -->
   <!-- SCRIPTS -->
@@ -192,12 +308,79 @@
       addPicture : '',
       config : {
         port : 'http://localhost:3000'
-      }
+      },
+
+      login_email : '',
+      login_password : '',
+
+      register_name : '',
+      register_email : '',
+      register_password : '',
+
+      islogin : false
     },
     created : function() {
       this.getTemplate()
+      this.checkToken()
     },
     methods : {
+      checkToken : function(){
+        let token = localStorage.getItem('token')
+        console.log('hasil cek token',token)
+        console.log(this.islogin)
+        if(token){
+          this.islogin = true
+        }else{
+          this.islogin = false
+        }
+        console.log(this.islogin)
+      },
+      logout : function(){
+        localStorage.removeItem('token')
+        localStorage.removeItem('userId')
+        this.checkToken()
+      },
+      login : function(){
+        let data = {
+          email : this.login_email,
+          password : this.login_password
+        }
+
+        axios({
+          method : 'POST',
+          url : `${this.config.port}/users/login`,
+          data
+        })
+        .then(response=>{
+          localStorage.setItem('token',response.data.token)
+          localStorage.setItem('userId',response.data.userId)
+
+          this.islogin = true
+          console.log('user logged in...')
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
+      register : function(){
+        let data = {
+          name : this.register_name,
+          email : this.register_email,
+          password : this.register_password
+        }
+
+        axios({
+          method : 'POST',
+          url : `${this.config.port}/users/register`,
+          data
+        })
+        .then(response=>{
+          console.log(response)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
       getImageAdd(link) {
         this.addPicture = link.target.files[0];
       },
