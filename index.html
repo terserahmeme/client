@@ -129,8 +129,11 @@
     </div>
 
     <div class="row mt-5 mb-5 d-flex justify-content-around" v-if="meme">
-      <div class="col-sm-3"><div class="btn purple-gradient">Share To Facebook  <i class="fab fa-facebook-square"></i></div></div>
+      <div class="col-sm-3"><div class="btn purple-gradient" data-href="https://developers.facebook.com/docs/plugins/"> <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore"> Share To Facebook  <i class="fab fa-facebook-square"></i></div></div>
       <div class="col-sm-3"><div class="btn purple-gradient">Download  <i class="fas fa-download"></i></div></div>
+      <!-- <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="large" data-mobile-iframe="false">
+      <a target="_blank" v-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${ this.meme }`" class="fb-xfbml-parse-ignore">Bagikan</a></div> -->
+
       <div class="col-sm-3"><div class="btn purple-gradient">Save To Collections  <i class="fas fa-download"></i></div></div>
     </div>
     
@@ -147,6 +150,15 @@
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.min.js"></script>
   <script>
+
+    (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2&appId=2072079672813479&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
   var app = new Vue({
     el: '#app',
     data: {
